@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/users" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="userRowMapper" class="edu.hm.cs.goetz1.seminar.db.UserRowMapper" />
+
+	<bean id="springUserDAO" class="edu.hm.cs.goetz1.seminar.db.SpringUserDAO">
+		<constructor-arg name="jdbcTemplate" ref="jdbcTemplate" />
+		<constructor-arg name="rowMapper" ref="userRowMapper" />
+	</bean>
+
+	<bean id="pbkdf2PasswordHash" class="edu.hm.cs.goetz1.seminar.util.Pbkdf2PasswordHash" />
+
+	<bean id="springUserService" class="edu.hm.cs.goetz1.seminar.services.SpringUserService">
+		<constructor-arg name="passwordHash" ref="pbkdf2PasswordHash" />
+		<property name="userDatabase" ref="springUserDAO" />
+	</bean>
+
+</beans>
