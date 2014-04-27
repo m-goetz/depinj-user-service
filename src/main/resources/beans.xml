@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
+	<context:component-scan base-package="edu.hm.cs.goetz1.seminar"/>
+	
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -16,11 +20,6 @@
 	</bean>
 
 	<bean id="userRowMapper" class="edu.hm.cs.goetz1.seminar.db.UserRowMapper" />
-
-	<bean id="springUserDAO" class="edu.hm.cs.goetz1.seminar.db.SpringUserDAO">
-		<constructor-arg name="jdbcTemplate" ref="jdbcTemplate" />
-		<constructor-arg name="rowMapper" ref="userRowMapper" />
-	</bean>
 
 	<bean id="pbkdf2PasswordHash" class="edu.hm.cs.goetz1.seminar.util.Pbkdf2PasswordHash" />
 

@@ -22,20 +22,17 @@ import java.util.Date;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import edu.hm.cs.goetz1.seminar.db.UserDAO;
-import edu.hm.cs.goetz1.seminar.model.User;
+import edu.hm.cs.goetz1.seminar.services.UserService;
 
 public class Main {
 
     public static void main(String[] args) {
         AbstractApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-        UserDAO userDatabase = (UserDAO) context.getBean("springUserDAO");
-
-        userDatabase.createUser("test@email.de", "Max", "Mustermann", "geheim", new Date());
-        userDatabase.updateUser("test@email.de", "Max", "Mustermann", "totalGeheim", new Date());
-        User mustermann = userDatabase.getUser("test@email.de");
-        System.out.println(mustermann.toString());
-
+        UserService userService = (UserService) context.getBean(UserService.class);
+        
+        userService.addNewUser("test@email.de", "Max", "Mustermann", "totalGeheim", new Date());
+        userService.changeUserPassword("test@email.de", "totalGeheim", "nochGeheimer");
+        
         context.close();
     }
 }

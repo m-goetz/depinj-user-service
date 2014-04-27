@@ -19,21 +19,24 @@ package edu.hm.cs.goetz1.seminar.db;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import edu.hm.cs.goetz1.seminar.model.User;
 
+@Component
 public class SpringUserDAO extends AbstractSqlUserDAO implements UserDAO {
 
     private JdbcTemplate jdbcTemplate;
     private RowMapper<User> rowMapper;
 
+    @Autowired
     public SpringUserDAO(JdbcTemplate jdbcTemplate, RowMapper<User> rowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.rowMapper = rowMapper;
-
         if (!tableExists()) {
             jdbcTemplate.execute(CREATE_TABLE);
         }
@@ -50,7 +53,6 @@ public class SpringUserDAO extends AbstractSqlUserDAO implements UserDAO {
 
     @Override
     public User createUser(String email, String firstName, String lastName, String password, Date birthDate) {
-
         jdbcTemplate.update(CREATE_USER, email, firstName, lastName, password, birthDate);
         return new User(email, firstName, lastName, password, birthDate);
     }
@@ -67,7 +69,6 @@ public class SpringUserDAO extends AbstractSqlUserDAO implements UserDAO {
 
     @Override
     public User updateUser(String email, String firstName, String lastName, String password, Date birthDate) {
-
         jdbcTemplate.update(UPDATE_USER, firstName, lastName, password, birthDate, email);
         return new User(email, firstName, lastName, password, birthDate);
     }
