@@ -29,7 +29,6 @@ public class PasswordHashTest {
         String password = "totalGeheim!";
 
         String hashedPassword = passwordHash.createHash(password);
-        System.out.println(hashedPassword.length());
 
         assertTrue(passwordHash.validatePassword(password, hashedPassword));
     }
